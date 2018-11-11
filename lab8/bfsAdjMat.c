@@ -122,6 +122,7 @@ void create_graph()
         else
         {
             adj[origin][destin] = 1;
+            adj[destin][origin] = 1;
         }
     }
 }
