@@ -1,9 +1,9 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-int adj[100][100]={0};
-int j=1,visited[1000]={0};
-int result[100][100]={0};
+int adj[100][100] = {0};
+int j = 1, visited[1000] = {0};
+int result[100][100] = {0};
 //memset(tree,-1,sizeof(tree));
 int id[1000];
 struct heap
@@ -16,41 +16,43 @@ struct heap tree[200000];
 
 void upheapify(int node)
 {
-	if(node==1)
+	if (node == 1)
 		return;
-	if(tree[node].weight<tree[node/2].weight)
+	if (tree[node].weight < tree[node / 2].weight)
 	{
-		struct heap temp=tree[node];
-		tree[node]=tree[node/2];
-		tree[node/2]=temp;
+		struct heap temp = tree[node];
+		tree[node] = tree[node / 2];
+		tree[node / 2] = temp;
 	}
-	upheapify(node/2);
+	upheapify(node / 2);
 	return;
 }
 
 void downheapify(int node)
 {
-	if(tree[node].weight==-1) return;
-	int hl=tree[2*node].weight,hr=tree[2*node+1].weight;
-		if(hl==-1) hl=1000000;
-		if(hr==-1) hr=1000000;
-		if((hl<hr)&&(hl<tree[node].weight))
-		{
-			struct heap temp=tree[node];
-			tree[node]=tree[2*node];
-			tree[2*node]=temp;
-			downheapify(2*node);
-		}
-		else if(hr<tree[node].weight)
-		{
-			struct heap temp=tree[node];
-			tree[node]=tree[2*node+1];
-			tree[2*node+1]=temp;
-			downheapify(2*node+1);			
-		}
-	return;	
+	if (tree[node].weight == -1)
+		return;
+	int hl = tree[2 * node].weight, hr = tree[2 * node + 1].weight;
+	if (hl == -1)
+		hl = 1000000;
+	if (hr == -1)
+		hr = 1000000;
+	if ((hl < hr) && (hl < tree[node].weight))
+	{
+		struct heap temp = tree[node];
+		tree[node] = tree[2 * node];
+		tree[2 * node] = temp;
+		downheapify(2 * node);
+	}
+	else if (hr < tree[node].weight)
+	{
+		struct heap temp = tree[node];
+		tree[node] = tree[2 * node + 1];
+		tree[2 * node + 1] = temp;
+		downheapify(2 * node + 1);
+	}
+	return;
 }
-
 
 /*void display(int node)
 {
@@ -65,32 +67,33 @@ void downheapify(int node)
 void prims()
 {
 	int i;
-	tree[1].weight=0;
-	tree[1].from=0;
-	tree[1].to=1;
+	tree[1].weight = 0;
+	tree[1].from = 0;
+	tree[1].to = 1;
 	j++;
-	while(j!=1)
+	while (j != 1)
 	{
-		int u=tree[1].from;
-		int v=tree[1].to;
-		int w=tree[1].weight;
+		int u = tree[1].from;
+		int v = tree[1].to;
+		int w = tree[1].weight;
 		j--;
-		tree[1]=tree[j];
-		tree[j].weight=-1;
+		tree[1] = tree[j];
+		tree[j].weight = -1;
 		downheapify(1);
-		if(visited[v]) continue;
-		visited[v]=1;
-		result[u][v]=w;
-		result[v][u]=w;
-	//	printf("%d %d %d\n",u,v,w);
-		for(i=1;i<100;i++)
+		if (visited[v])
+			continue;
+		visited[v] = 1;
+		result[u][v] = w;
+		result[v][u] = w;
+		//	printf("%d %d %d\n",u,v,w);
+		for (i = 1; i < 100; i++)
 		{
-			if(adj[v][i])
+			if (adj[v][i])
 			{
 
-				tree[j].from=v;
-				tree[j].to=i;
-				tree[j].weight=adj[v][i];
+				tree[j].from = v;
+				tree[j].to = i;
+				tree[j].weight = adj[v][i];
 				upheapify(j);
 				j++;
 			}
@@ -101,25 +104,26 @@ void prims()
 
 int main()
 {
-	int n,i,m;
+	int n, i, m;
 	printf("Enter the numebr of nodes and edges \n");
-	scanf("%d%d",&n,&m);
+	scanf("%d%d", &n, &m);
 	printf("Enter the edges \n");
-	for(i=0;i<200000;i++) tree[i].weight=-1;
-	for(i=0;i<m;i++)
+	for (i = 0; i < 200000; i++)
+		tree[i].weight = -1;
+	for (i = 0; i < m; i++)
 	{
-		int u,v,w;
-		scanf("%d%d%d",&u,&v,&w);
-		adj[u][v]=w;
-		adj[v][u]=w;
-	}	
+		int u, v, w;
+		scanf("%d%d%d", &u, &v, &w);
+		adj[u][v] = w;
+		adj[v][u] = w;
+	}
 	prims();
-	for(i=1;i<100;i++)
+	for (i = 1; i < 100; i++)
 	{
-		for(j=1;j<100;j++)
+		for (j = 1; j < 100; j++)
 		{
-			if(result[i][j])
-				printf("%d %d %d\n",i,j,result[i][j]);
+			if (result[i][j])
+				printf("%d %d %d\n", i, j, result[i][j]);
 		}
 	}
 	return 0;
